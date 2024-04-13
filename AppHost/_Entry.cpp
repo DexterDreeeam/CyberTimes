@@ -1,4 +1,10 @@
-int main()
+#include <Windows.h>
+#include "Gui.hpp"
+
+int WINAPI WinMain(
+    HINSTANCE hInstance, HINSTANCE hPrevInstance,
+    PSTR lpCmdLine, int nCmdShow)
 {
-    return 0;
+    auto gui = ct::Gui::Ins();
+    gui;
 }
