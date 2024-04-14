@@ -4,6 +4,8 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx12.h"
 
+#include "TaskManager.hpp"
+
 #ifdef _DEBUG
 #define DX12_ENABLE_DEBUG_LAYER
 #endif
@@ -48,60 +50,57 @@ static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 NS_BEG
 
-std::shared_ptr<Gui> Gui::Ins()
+void Gui::OnInstantiate()
 {
-    static std::shared_ptr<Gui> _ins = nullptr;
-    if (_ins)
-    {
-        return _ins;
-    }
-    _ins = std::shared_ptr<Gui>(new Gui());
-    // _ins->loop = std::thread(&Gui::ImguiLoop, _ins);
-    _ins->ImguiLoop();
-    return _ins;
+    m_Worker = std::thread(&Gui::ImguiLife, this);
 }
 
 Gui::Gui() :
-    wc(),
-    hwnd(nullptr),
-    loop(),
-    show_demo_window(true),
-    show_another_window(false),
-    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f))
+    m_WindowCls(),
+    m_Window(nullptr),
+    m_WindowFlag(0),
+    m_WindowBodyFlag(0),
+    m_Worker(),
+    m_Background(ImVec4(0.0f, 0.0f, 0.0f, 1.0f))
 {
-    ImguiSetup();
 }
 
 Gui::~Gui()
 {
-    if (loop.joinable())
+    if (m_Worker.joinable())
     {
-        loop.join();
+        m_Worker.join();
     }
+}
+
+void Gui::ImguiLife()
+{
+    ImguiSetup();
+    ImguiLoop();
     ImguiDestroy();
 }
 
 void Gui::ImguiSetup()
 {
-    wc =
+    m_WindowCls =
     {
-        sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr),
-        nullptr, nullptr, nullptr, nullptr, "ImGui Example", nullptr
+        sizeof(m_WindowCls), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr),
+        nullptr, nullptr, nullptr, nullptr, "CyberTimes", nullptr
     };
-    ::RegisterClassEx(&wc);
-    hwnd = ::CreateWindow(
-        wc.lpszClassName, "Dear ImGui DirectX12 Example", WS_OVERLAPPEDWINDOW,
-        100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
+    ::RegisterClassEx(&m_WindowCls);
+    m_Window = ::CreateWindow(
+        m_WindowCls.lpszClassName, "Cyber Times", WS_OVERLAPPED,
+        100, 100, 800, 653, nullptr, nullptr, m_WindowCls.hInstance, nullptr);
 
-    if (!CreateDeviceD3D(hwnd))
+    if (!CreateDeviceD3D(m_Window))
     {
         CleanupDeviceD3D();
-        ::UnregisterClass(wc.lpszClassName, wc.hInstance);
+        ::UnregisterClass(m_WindowCls.lpszClassName, m_WindowCls.hInstance);
         throw "CreateDeviceD3D error";
     }
 
-    ::ShowWindow(hwnd, SW_SHOWDEFAULT);
-    ::UpdateWindow(hwnd);
+    ::ShowWindow(m_Window, SW_SHOWDEFAULT);
+    ::UpdateWindow(m_Window);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -114,15 +113,39 @@ void Gui::ImguiSetup()
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplWin32_Init(hwnd);
-    ImGui_ImplDX12_Init(g_pd3dDevice, NUM_FRAMES_IN_FLIGHT,
+    ImGui_ImplWin32_Init(m_Window);
+    ImGui_ImplDX12_Init(
+        g_pd3dDevice, NUM_FRAMES_IN_FLIGHT,
         DXGI_FORMAT_R8G8B8A8_UNORM, g_pd3dSrvDescHeap,
         g_pd3dSrvDescHeap->GetCPUDescriptorHandleForHeapStart(),
         g_pd3dSrvDescHeap->GetGPUDescriptorHandleForHeapStart());
+
+    m_WindowFlag |= ImGuiWindowFlags_NoTitleBar;
+    m_WindowFlag |= ImGuiWindowFlags_NoScrollbar;
+    m_WindowFlag |= ImGuiWindowFlags_NoMove;
+    m_WindowFlag |= ImGuiWindowFlags_NoResize;
+    m_WindowFlag |= ImGuiWindowFlags_NoCollapse;
+    m_WindowFlag |= ImGuiWindowFlags_NoNav;
+    m_WindowFlag |= ImGuiWindowFlags_NoBackground;
+    m_WindowFlag |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    m_WindowFlag |= ImGuiWindowFlags_UnsavedDocument;
+
+    m_WindowBodyFlag |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoTitleBar;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoMove;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoResize;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoCollapse;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoNav;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoBackground;
+    m_WindowBodyFlag |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    m_WindowBodyFlag |= ImGuiWindowFlags_UnsavedDocument;
 }
 
 void Gui::ImguiLoop()
 {
+    auto& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("BondStory.ttf", 20);
+
     bool done = false;
     while (!done)
     {
@@ -145,7 +168,7 @@ void Gui::ImguiLoop()
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        ImguiIterator(ImGui::GetIO());
+        ImguiIterator(io);
 
         // Rendering
         ImGui::Render();
@@ -164,8 +187,13 @@ void Gui::ImguiLoop()
         g_pd3dCommandList->Reset(frameCtx->CommandAllocator, nullptr);
         g_pd3dCommandList->ResourceBarrier(1, &barrier);
 
-        // Render Dear ImGui graphics
-        const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
+        const float clear_color_with_alpha[4] =
+        {
+            m_Background.x * m_Background.w,
+            m_Background.y * m_Background.w,
+            m_Background.z * m_Background.w,
+            m_Background.w
+        };
         g_pd3dCommandList->ClearRenderTargetView(g_mainRenderTargetDescriptor[backBufferIdx], clear_color_with_alpha, 0, nullptr);
         g_pd3dCommandList->OMSetRenderTargets(1, &g_mainRenderTargetDescriptor[backBufferIdx], FALSE, nullptr);
         g_pd3dCommandList->SetDescriptorHeaps(1, &g_pd3dSrvDescHeap);
@@ -189,39 +217,25 @@ void Gui::ImguiLoop()
 
 void Gui::ImguiIterator(ImGuiIO& io)
 {
-    if (show_demo_window)
+    auto task = ct::TaskManager::Ins()->CurrentTask();
+    if (task)
     {
-        ImGui::ShowDemoWindow(&show_demo_window);
-    }
-
-    {
-        static float f = 0.0f;
-        static int counter = 0;
-
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-        ImGui::Checkbox("Another Window", &show_another_window);
-
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
-
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(800.0, 50.0));
+        ImGui::Begin("Header", nullptr, m_WindowFlag);
+        task->ImguiRenderHeader();
         ImGui::End();
-    }
 
-    if (show_another_window)
-    {
-        ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-        ImGui::Text("Hello from another window!");
-        if (ImGui::Button("Close Me"))
-            show_another_window = false;
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 55.0f));
+        ImGui::SetNextWindowSize(ImVec2(780.0, 505.0));
+        ImGui::Begin("Body", nullptr, m_WindowBodyFlag);
+        task->ImguiRenderBody();
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 560.0f));
+        ImGui::SetNextWindowSize(ImVec2(800.0, 50.0));
+        ImGui::Begin("Foot", nullptr, m_WindowFlag);
+        task->ImguiRenderFoot();
         ImGui::End();
     }
 }
@@ -235,8 +249,8 @@ void Gui::ImguiDestroy()
     ImGui::DestroyContext();
 
     CleanupDeviceD3D();
-    ::DestroyWindow(hwnd);
-    ::UnregisterClass(wc.lpszClassName, wc.hInstance);
+    ::DestroyWindow(m_Window);
+    ::UnregisterClass(m_WindowCls.lpszClassName, m_WindowCls.hInstance);
 }
 
 NS_END

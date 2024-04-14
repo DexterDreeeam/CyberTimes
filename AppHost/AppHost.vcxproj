@@ -60,13 +60,16 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d12.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(ProjectDir)\BondStory.ttf" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -77,7 +80,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -86,20 +89,36 @@
       <AdditionalDependencies>d3d12.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(ProjectDir)\BondStory.ttf" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include=".impl\Gui.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
-    <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Task\.impl\StartUpTask.cpp" />
+    <ClCompile Include="Task\.impl\TaskBase.cpp" />
+    <ClCompile Include="Task\.impl\TaskManager.cpp" />
+    <ClCompile Include="Task\.impl\UserTokenInputTask.cpp" />
     <ClCompile Include="_Entry.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfigRecorder.hpp" />
     <ClInclude Include="Gui.hpp" />
+    <ClInclude Include="Task\StartUpTask.hpp" />
+    <ClInclude Include="Task\Task.hpp" />
+    <ClInclude Include="Task\TaskBase.hpp" />
+    <ClInclude Include="Task\TaskManager.hpp" />
+    <ClInclude Include="Task\TaskType.hpp" />
+    <ClInclude Include="Task\UserTokenInputTask.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\Users\jiaxiangzou\Downloads\bond-story-font\BondStory.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

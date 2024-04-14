@@ -1,33 +1,37 @@
-#include "cpp_std.hpp"
+#pragma once
+
+#include "common.hpp"
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include "imgui.h"
 
 NS_BEG
 
-class Gui
+class Gui : public InsBase<Gui>
 {
+    friend class InsBase;
+
 public:
-    static std::shared_ptr<Gui> Ins();
+    virtual void OnInstantiate() override;
     ~Gui();
 
 private:
     Gui();
     Gui(const Gui&) = delete;
 
+    void ImguiLife();
     void ImguiSetup();
     void ImguiLoop();
     void ImguiIterator(ImGuiIO& io);
     void ImguiDestroy();
 
 private:
-    WNDCLASSEX wc;
-    HWND hwnd;
-    std::thread loop;
-
-    bool show_demo_window;
-    bool show_another_window;
-    ImVec4 clear_color;
+    WNDCLASSEX        m_WindowCls;
+    HWND              m_Window;
+    ImGuiWindowFlags  m_WindowFlag;
+    ImGuiWindowFlags  m_WindowBodyFlag;
+    std::thread       m_Worker;
+    ImVec4            m_Background;
 };
 
 NS_END

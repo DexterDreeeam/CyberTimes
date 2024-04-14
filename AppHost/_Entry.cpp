@@ -1,10 +1,14 @@
 #include <Windows.h>
+#include "TaskManager.hpp"
 #include "Gui.hpp"
 
 int WINAPI WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PSTR lpCmdLine, int nCmdShow)
 {
-    auto gui = ct::Gui::Ins();
-    gui;
+    ct::TaskManager::Ins();
+    ct::Gui::Ins();
+
+    ct::Gui::Ins(false);
+    ct::TaskManager::Ins(false);
 }
