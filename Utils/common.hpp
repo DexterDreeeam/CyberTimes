@@ -5,6 +5,8 @@
 
 #define ExMsg(m) __FILE__##", "##__FUNC__##m
 
-#include "cpp_std.hpp"
+#define AppNameStr  "CyberTimes"
+#define AppTitleStr "Cyber Times"
 
+#include "cpp_std.hpp"
 #include "InsBase.hpp"

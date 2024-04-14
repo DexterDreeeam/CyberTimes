@@ -16,33 +16,27 @@ StartUpTask::~StartUpTask()
 
 void StartUpTask::ImguiRenderHeader()
 {
-    ImGui::SetWindowFontScale(1.2f);
-    bool click = ImGui::Button("Back", ImVec2(380.0f, 40.0f));
-    ImGui::SameLine();
-    bool click2 = ImGui::Button("Close", ImVec2(380.0f, 40.0f));
 }
 
 void StartUpTask::ImguiRenderBody()
 {
-    ImGui::SetWindowFontScale(1.2f);
-    for (int i = 0; i < 100; ++i)
-    {
-        ImGui::Text("Are You OK?");
-    }
+    ImGui::SetWindowFontScale(2.0f);
+    ImVec2 textSize = ImGui::CalcTextSize(AppTitleStr);
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    ImVec2 textPosition(windowSize.x / 2, windowSize.y / 2);
+    textPosition.x -= textSize.x / 2;
+    textPosition.y -= textSize.y / 2;
+    ImGui::SetCursorPos(textPosition);
+    ImGui::Text(AppTitleStr);
 }
 
 void StartUpTask::ImguiRenderFoot()
 {
-    ImGui::SetWindowFontScale(1.2f);
-    bool click = ImGui::Button("Reset", ImVec2(380.0f, 40.0f));
-    ImGui::SameLine();
-    bool click2 = ImGui::Button("Confirm", ImVec2(380.0f, 40.0f));
 }
 
 void StartUpTask::OnStart()
 {
-    // Sleep(3000);
-    Sleep(INFINITE);
+    Sleep(1500);
 }
 
 void StartUpTask::OnFinish()

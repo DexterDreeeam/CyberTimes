@@ -105,6 +105,7 @@
     <ClCompile Include="Task\.impl\TaskBase.cpp" />
     <ClCompile Include="Task\.impl\TaskManager.cpp" />
     <ClCompile Include="Task\.impl\UserTokenInputTask.cpp" />
+    <ClCompile Include="Task\.impl\UserTokenVerifyingTask.cpp" />
     <ClCompile Include="_Entry.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +117,7 @@
     <ClInclude Include="Task\TaskManager.hpp" />
     <ClInclude Include="Task\TaskType.hpp" />
     <ClInclude Include="Task\UserTokenInputTask.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\Users\jiaxiangzou\Downloads\bond-story-font\BondStory.ttf" />
+    <ClInclude Include="Task\UserTokenVerifyingTask.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

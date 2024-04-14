@@ -5,12 +5,12 @@
 
 NS_BEG
 
-class UserTokenInputTask : public Task<UserTokenInputTask>
+class UserTokenVerifyingTask : public Task<UserTokenVerifyingTask>
 {
 public:
-    UserTokenInputTask();
-    UserTokenInputTask(const UserTokenInputTask&) = delete;
-    ~UserTokenInputTask();
+    UserTokenVerifyingTask();
+    UserTokenVerifyingTask(const UserTokenVerifyingTask&) = delete;
+    ~UserTokenVerifyingTask();
 
 public:
     virtual void ImguiRenderHeader() override;
@@ -20,7 +20,7 @@ public:
     virtual void OnFinish() override;
 
 public:
-    virtual TaskType Type() override { return TaskType::UserTokenInput; }
+    virtual TaskType Type() override { return TaskType::UserTokenVerifying; }
 
 private:
     bool                    m_FocusRender;

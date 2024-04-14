@@ -1,11 +1,11 @@
 #include <Windows.h>
 #include "imgui.h"
-#include "UserTokenInputTask.hpp"
+#include "UserTokenVerifyingTask.hpp"
 #include "TaskManager.hpp"
 
 NS_BEG
 
-UserTokenInputTask::UserTokenInputTask() :
+UserTokenVerifyingTask::UserTokenVerifyingTask() :
     Task(),
     m_FocusRender(false),
     m_UserToken(),
@@ -14,11 +14,11 @@ UserTokenInputTask::UserTokenInputTask() :
 {
 }
 
-UserTokenInputTask::~UserTokenInputTask()
+UserTokenVerifyingTask::~UserTokenVerifyingTask()
 {
 }
 
-void UserTokenInputTask::ImguiRenderHeader()
+void UserTokenVerifyingTask::ImguiRenderHeader()
 {
     ImGui::SetWindowFontScale(1.2f);
 
@@ -27,17 +27,18 @@ void UserTokenInputTask::ImguiRenderHeader()
     ImGui::EndDisabled();
 
     ImGui::SameLine();
+
     if (ImGui::Button("Close", ImVec2(380.0f, 40.0f)))
     {
         PostQuitMessage(0);
     }
 }
 
-void UserTokenInputTask::ImguiRenderBody()
+void UserTokenVerifyingTask::ImguiRenderBody()
 {
     ImGui::SetWindowFontScale(1.2f);
 
-    const char* userTipStr = "Input User Token";
+    const char* userTipStr = "Verifying...";
     ImVec2 textSize = ImGui::CalcTextSize(userTipStr);
     ImVec2 windowSize = ImGui::GetWindowSize();
     ImVec2 textPosition(windowSize.x / 2, windowSize.y / 3);
@@ -45,19 +46,13 @@ void UserTokenInputTask::ImguiRenderBody()
     textPosition.y -= textSize.y;
     ImGui::SetCursorPos(textPosition);
     ImGui::Text(userTipStr);
-
-    if (m_FocusRender)
-    {
-        m_FocusRender = false;
-        ImGui::SetKeyboardFocusHere(0);
-    }
-    ImGui::InputTextMultiline(
-        "UserToken", m_UserToken, IM_ARRAYSIZE(m_UserToken), ImVec2(-1.0f, 120.0f));
 }
 
-void UserTokenInputTask::ImguiRenderFoot()
+void UserTokenVerifyingTask::ImguiRenderFoot()
 {
     ImGui::SetWindowFontScale(1.2f);
+
+    ImGui::BeginDisabled();
     if (ImGui::Button("Reset", ImVec2(380.0f, 40.0f)))
     {
         memset(m_UserToken, 0, sizeof(m_UserToken));
@@ -67,20 +62,20 @@ void UserTokenInputTask::ImguiRenderFoot()
     ImGui::SameLine();
     if (ImGui::Button("Confirm", ImVec2(380.0f, 40.0f)))
     {
-        TaskManager::Ins()->PrepareNextTask(TaskType::UserTokenVerifying);
+        TaskManager::Ins()->PrepareNextTask(TaskType::UserTokenVerifiedSucceed);
         m_ConfirmCv.notify_all();
     }
+    ImGui::EndDisabled();
 }
 
-void UserTokenInputTask::OnStart()
+void UserTokenVerifyingTask::OnStart()
 {
     m_FocusRender = true;
 
-    std::unique_lock<std::mutex> _ul(m_ConfirmMtx);
-    m_ConfirmCv.wait(_ul);
+    Sleep(3000);
 }
 
-void UserTokenInputTask::OnFinish()
+void UserTokenVerifyingTask::OnFinish()
 {
 
 }

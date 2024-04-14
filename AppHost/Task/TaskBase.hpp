@@ -12,11 +12,11 @@ class TaskBase
 public:
     TaskBase() = default;
 
-    virtual void ImguiRenderHeader() = 0;
-    virtual void ImguiRenderBody() = 0;
-    virtual void ImguiRenderFoot() = 0;
-    virtual void OnStart() = 0;
-    virtual void OnFinish() = 0;
+    virtual void ImguiRenderHeader() {}
+    virtual void ImguiRenderBody() {}
+    virtual void ImguiRenderFoot() {}
+    virtual void OnStart() {}
+    virtual void OnFinish() {}
     virtual TaskType Type() { return TaskType::None; };
 
 protected:

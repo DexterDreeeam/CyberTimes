@@ -4,6 +4,7 @@
 #include "TaskManager.hpp"
 #include "StartUpTask.hpp"
 #include "UserTokenInputTask.hpp"
+#include "UserTokenVerifyingTask.hpp"
 
 NS_BEG
 
@@ -98,6 +99,8 @@ std::shared_ptr<TaskBase> TaskManager::CurrentTask()
         return StartUpTask::Ins();
     case TaskType::UserTokenInput:
         return UserTokenInputTask::Ins();
+    case TaskType::UserTokenVerifying:
+        return UserTokenVerifyingTask::Ins();
     default:
         return nullptr;
     }

@@ -85,11 +85,11 @@ void Gui::ImguiSetup()
     m_WindowCls =
     {
         sizeof(m_WindowCls), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr),
-        nullptr, nullptr, nullptr, nullptr, "CyberTimes", nullptr
+        nullptr, nullptr, nullptr, nullptr, AppNameStr, nullptr
     };
     ::RegisterClassEx(&m_WindowCls);
     m_Window = ::CreateWindow(
-        m_WindowCls.lpszClassName, "Cyber Times", WS_OVERLAPPED,
+        m_WindowCls.lpszClassName, AppTitleStr, WS_OVERLAPPED,
         100, 100, 800, 653, nullptr, nullptr, m_WindowCls.hInstance, nullptr);
 
     if (!CreateDeviceD3D(m_Window))
@@ -130,7 +130,6 @@ void Gui::ImguiSetup()
     m_WindowFlag |= ImGuiWindowFlags_NoBringToFrontOnFocus;
     m_WindowFlag |= ImGuiWindowFlags_UnsavedDocument;
 
-    m_WindowBodyFlag |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
     m_WindowBodyFlag |= ImGuiWindowFlags_NoTitleBar;
     m_WindowBodyFlag |= ImGuiWindowFlags_NoMove;
     m_WindowBodyFlag |= ImGuiWindowFlags_NoResize;
