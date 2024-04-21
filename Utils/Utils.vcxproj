@@ -43,6 +43,7 @@
   <ItemGroup>
     <ClInclude Include="common.hpp" />
     <ClInclude Include="cpp_std.hpp" />
+    <ClInclude Include="exception.hpp" />
     <ClInclude Include="InsBase.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

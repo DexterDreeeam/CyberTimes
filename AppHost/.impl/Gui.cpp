@@ -96,7 +96,7 @@ void Gui::ImguiSetup()
     {
         CleanupDeviceD3D();
         ::UnregisterClass(m_WindowCls.lpszClassName, m_WindowCls.hInstance);
-        throw "CreateDeviceD3D error";
+        throw new ct::Ex("CreateDeviceD3D error");
     }
 
     ::ShowWindow(m_Window, SW_SHOWDEFAULT);

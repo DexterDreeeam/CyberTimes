@@ -9,4 +9,5 @@
 #define AppTitleStr "Cyber Times"
 
 #include "cpp_std.hpp"
+#include "exception.hpp"
 #include "InsBase.hpp"

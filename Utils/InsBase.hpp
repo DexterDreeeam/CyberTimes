@@ -6,19 +6,21 @@ template<typename Ty>
 class InsBase
 {
 public:
-    static std::shared_ptr<Ty> Ins(bool bIns = true)
+    template <typename ...Tys>
+    static std::shared_ptr<Ty> Ins(Tys... tys)
     {
-        if (bIns && _ins)
+        if (_ins)
         {
-            return _ins;
-        }
-        else if (bIns)
-        {
-            _ins = std::shared_ptr<Ty>(new Ty());
-            _ins->OnInstantiate();
             return _ins;
         }
 
+        _ins = std::shared_ptr<Ty>(new Ty(tys...));
+        _ins->OnInstantiate();
+        return _ins;
+    }
+
+    static void Deins()
+    {
         try
         {
             _ins = nullptr;
@@ -27,7 +29,6 @@ public:
         {
             // no op
         }
-        return nullptr;
     }
 
     virtual void OnInstantiate() {}
