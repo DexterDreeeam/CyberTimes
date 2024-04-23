@@ -27,6 +27,7 @@ void UserTokenInputTask::ImguiRenderHeader()
     ImGui::EndDisabled();
 
     ImGui::SameLine();
+
     if (ImGui::Button("Close", ImVec2(380.0f, 40.0f)))
     {
         PostQuitMessage(0);
@@ -58,6 +59,7 @@ void UserTokenInputTask::ImguiRenderBody()
 void UserTokenInputTask::ImguiRenderFoot()
 {
     ImGui::SetWindowFontScale(1.2f);
+
     if (ImGui::Button("Reset", ImVec2(380.0f, 40.0f)))
     {
         memset(m_UserToken, 0, sizeof(m_UserToken));
@@ -67,7 +69,6 @@ void UserTokenInputTask::ImguiRenderFoot()
     ImGui::SameLine();
     if (ImGui::Button("Confirm", ImVec2(380.0f, 40.0f)))
     {
-        TaskManager::Ins()->PrepareNextTask(TaskType::UserTokenVerifying);
         m_ConfirmCv.notify_all();
     }
 }
@@ -82,7 +83,7 @@ void UserTokenInputTask::OnStart()
 
 void UserTokenInputTask::OnFinish()
 {
-
+    TaskManager::Ins()->PrepareNextTask(TaskType::UserTokenVerifying);
 }
 
 NS_END

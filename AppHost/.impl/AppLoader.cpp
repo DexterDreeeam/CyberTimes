@@ -8,7 +8,7 @@ void AppLoader::OnInstantiate()
 }
 
 AppLoader::AppLoader() :
-    m_dllModule(nullptr),
+    m_dllModule(0),
     m_appStart(nullptr),
     m_appFinish(nullptr)
 {
@@ -25,41 +25,43 @@ bool AppLoader::Load()
         throw new ct::Ex("App.dll already loaded");
     }
 
-    m_dllModule = LoadLibrary("./App.dll");
+    m_dllModule = (u64)LoadLibrary("./App.dll");
     if (!m_dllModule)
     {
         return false;
     }
 
-    m_appStart = reinterpret_cast<FnStart>(GetProcAddress(m_dllModule, "AppStart"));
+    m_appStart = reinterpret_cast<FnStart>(GetProcAddress((HMODULE)m_dllModule, "AppStart"));
     if (!m_appStart)
     {
         throw new ct::Ex("App.dll AppStart function load failed");
     }
 
-    m_appFinish = reinterpret_cast<FnStart>(GetProcAddress(m_dllModule, "AppFinish"));
+    m_appFinish = reinterpret_cast<FnStart>(GetProcAddress((HMODULE)m_dllModule, "AppFinish"));
     if (!m_appFinish)
     {
         throw new ct::Ex("App.dll AppFinish function load failed");
     }
 
+    m_appStart();
     return true;
 }
 
 void AppLoader::Unload()
 {
+    if (m_appFinish)
+    {
+        m_appFinish();
+        m_appFinish = nullptr;
+    }
     if (m_appStart)
     {
         m_appStart = nullptr;
     }
-    if (m_appFinish)
-    {
-        m_appFinish = nullptr;
-    }
     if (m_dllModule)
     {
-        FreeLibrary(m_dllModule);
-        m_dllModule = nullptr;
+        FreeLibrary((HMODULE)m_dllModule);
+        m_dllModule = 0;
     }
 }
 

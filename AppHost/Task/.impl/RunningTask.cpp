@@ -1,23 +1,23 @@
 #include <Windows.h>
 #include "imgui.h"
-#include "UserTokenVerifyingTask.hpp"
+#include "RunningTask.hpp"
 #include "TaskManager.hpp"
+#include "Apploader.hpp"
 
 NS_BEG
 
-UserTokenVerifyingTask::UserTokenVerifyingTask() :
+RunningTask::RunningTask() :
     Task(),
-    m_UserToken(),
     m_ConfirmMtx(),
     m_ConfirmCv()
 {
 }
 
-UserTokenVerifyingTask::~UserTokenVerifyingTask()
+RunningTask::~RunningTask()
 {
 }
 
-void UserTokenVerifyingTask::ImguiRenderHeader()
+void RunningTask::ImguiRenderHeader()
 {
     ImGui::SetWindowFontScale(1.2f);
 
@@ -33,11 +33,11 @@ void UserTokenVerifyingTask::ImguiRenderHeader()
     }
 }
 
-void UserTokenVerifyingTask::ImguiRenderBody()
+void RunningTask::ImguiRenderBody()
 {
     ImGui::SetWindowFontScale(1.2f);
 
-    const char* userTipStr = "Verifying...";
+    const char* userTipStr = "Running...";
     ImVec2 textSize = ImGui::CalcTextSize(userTipStr);
     ImVec2 windowSize = ImGui::GetWindowSize();
     ImVec2 textPosition(windowSize.x / 2, windowSize.y / 3);
@@ -47,33 +47,37 @@ void UserTokenVerifyingTask::ImguiRenderBody()
     ImGui::Text(userTipStr);
 }
 
-void UserTokenVerifyingTask::ImguiRenderFoot()
+void RunningTask::ImguiRenderFoot()
 {
     ImGui::SetWindowFontScale(1.2f);
 
     ImGui::BeginDisabled();
-    if (ImGui::Button("Reset", ImVec2(380.0f, 40.0f)))
-    {
-        memset(m_UserToken, 0, sizeof(m_UserToken));
-    }
+    ImGui::Button("Reset", ImVec2(380.0f, 40.0f));
+    ImGui::EndDisabled();
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Confirm", ImVec2(380.0f, 40.0f)))
+    if (ImGui::Button("Stop", ImVec2(380.0f, 40.0f)))
     {
         m_ConfirmCv.notify_all();
     }
-    ImGui::EndDisabled();
 }
 
-void UserTokenVerifyingTask::OnStart()
+void RunningTask::OnStart()
 {
-    Sleep(3000);
+    if (!AppLoader::Ins()->Load())
+    {
+        // todo
+    }
+
+    std::unique_lock<std::mutex> _ul(m_ConfirmMtx);
+    m_ConfirmCv.wait(_ul);
 }
 
-void UserTokenVerifyingTask::OnFinish()
+void RunningTask::OnFinish()
 {
-    TaskManager::Ins()->PrepareNextTask(TaskType::Running);
+    AppLoader::Ins()->Unload();
+    TaskManager::Ins()->PrepareNextTask(TaskType::Stopped);
 }
 
 NS_END

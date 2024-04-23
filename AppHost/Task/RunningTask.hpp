@@ -5,12 +5,12 @@
 
 NS_BEG
 
-class UserTokenVerifyingTask : public Task<UserTokenVerifyingTask>
+class RunningTask : public Task<RunningTask>
 {
 public:
-    UserTokenVerifyingTask();
-    UserTokenVerifyingTask(const UserTokenVerifyingTask&) = delete;
-    ~UserTokenVerifyingTask();
+    RunningTask();
+    RunningTask(const RunningTask&) = delete;
+    ~RunningTask();
 
 public:
     virtual void ImguiRenderHeader() override;
@@ -20,10 +20,9 @@ public:
     virtual void OnFinish() override;
 
 public:
-    virtual TaskType Type() override { return TaskType::UserTokenVerifying; }
+    virtual TaskType Type() override { return TaskType::Running; }
 
 private:
-    char                    m_UserToken[256];
     std::mutex              m_ConfirmMtx;
     std::condition_variable m_ConfirmCv;
 };

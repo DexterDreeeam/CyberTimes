@@ -19,11 +19,12 @@ private:
     AppLoader();
     AppLoader(const AppLoader&) = delete;
 
+public:
     bool Load();
     void Unload();
 
 private:
-    HMODULE   m_dllModule;
+    u64       m_dllModule;
     FnStart   m_appStart;
     FnFinish  m_appFinish;
 };
