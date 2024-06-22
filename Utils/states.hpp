@@ -18,6 +18,10 @@ enum class Object : u64
     Enemy1,
     Enemy2,
     Enemy3,
+
+    Pet1,
+    Pet2,
+    Pet3,
 };
 
 enum class State : u64

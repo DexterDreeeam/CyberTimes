@@ -80,7 +80,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Runtime.cpp" />
     <ClCompile Include="_Entry.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Runtime.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

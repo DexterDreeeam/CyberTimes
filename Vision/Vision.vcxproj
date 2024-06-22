@@ -83,7 +83,7 @@
     <ClInclude Include="Vision.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include=".impl\Vision.cpp" />
+    <ClCompile Include=".src\Vision.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,22 @@
+{
+    "grid-layout": [
+        5,
+        6,
+        7
+    ],
+    "op-pipes": [
+        {
+            "nick": "pipe-1",
+            "ops": [
+                {
+                    "condition": [
+                        
+                    ]
+                }
+            ]
+        },
+        {
+
+        }
+    ]
+}

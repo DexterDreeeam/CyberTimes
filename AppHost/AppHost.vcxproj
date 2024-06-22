@@ -60,7 +60,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\.imgui\;$(MSBuildProjectDirectory)\.imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -80,7 +80,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\imgui\;$(MSBuildProjectDirectory)\imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Utils\;$(MSBuildProjectDirectory)\;$(MSBuildProjectDirectory)\.imgui\;$(MSBuildProjectDirectory)\.imgui\backends\;$(MSBuildProjectDirectory)\Task</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -94,21 +94,21 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include=".impl\AppLoader.cpp" />
-    <ClCompile Include=".impl\Gui.cpp" />
-    <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp" />
-    <ClCompile Include="imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="imgui\imgui.cpp" />
-    <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="imgui\imgui_tables.cpp" />
-    <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Task\.impl\RunningTask.cpp" />
-    <ClCompile Include="Task\.impl\StartUpTask.cpp" />
-    <ClCompile Include="Task\.impl\StoppedTask.cpp" />
-    <ClCompile Include="Task\.impl\TaskBase.cpp" />
-    <ClCompile Include="Task\.impl\TaskManager.cpp" />
-    <ClCompile Include="Task\.impl\UserTokenInputTask.cpp" />
-    <ClCompile Include="Task\.impl\UserTokenVerifyingTask.cpp" />
+    <ClCompile Include=".src\AppLoader.cpp" />
+    <ClCompile Include=".src\Gui.cpp" />
+    <ClCompile Include=".imgui\backends\imgui_impl_dx12.cpp" />
+    <ClCompile Include=".imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include=".imgui\imgui.cpp" />
+    <ClCompile Include=".imgui\imgui_draw.cpp" />
+    <ClCompile Include=".imgui\imgui_tables.cpp" />
+    <ClCompile Include=".imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Task\.src\RunningTask.cpp" />
+    <ClCompile Include="Task\.src\StartUpTask.cpp" />
+    <ClCompile Include="Task\.src\StoppedTask.cpp" />
+    <ClCompile Include="Task\.src\TaskBase.cpp" />
+    <ClCompile Include="Task\.src\TaskManager.cpp" />
+    <ClCompile Include="Task\.src\UserTokenInputTask.cpp" />
+    <ClCompile Include="Task\.src\UserTokenVerifyingTask.cpp" />
     <ClCompile Include="_Entry.cpp" />
   </ItemGroup>
   <ItemGroup>
