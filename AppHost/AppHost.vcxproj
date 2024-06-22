@@ -104,6 +104,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Task\.impl\RunningTask.cpp" />
     <ClCompile Include="Task\.impl\StartUpTask.cpp" />
+    <ClCompile Include="Task\.impl\StoppedTask.cpp" />
     <ClCompile Include="Task\.impl\TaskBase.cpp" />
     <ClCompile Include="Task\.impl\TaskManager.cpp" />
     <ClCompile Include="Task\.impl\UserTokenInputTask.cpp" />
@@ -116,12 +117,16 @@
     <ClInclude Include="Gui.hpp" />
     <ClInclude Include="Task\RunningTask.hpp" />
     <ClInclude Include="Task\StartUpTask.hpp" />
+    <ClInclude Include="Task\StoppedTask.hpp" />
     <ClInclude Include="Task\Task.hpp" />
     <ClInclude Include="Task\TaskBase.hpp" />
     <ClInclude Include="Task\TaskManager.hpp" />
     <ClInclude Include="Task\TaskType.hpp" />
     <ClInclude Include="Task\UserTokenInputTask.hpp" />
     <ClInclude Include="Task\UserTokenVerifyingTask.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="BondStory.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

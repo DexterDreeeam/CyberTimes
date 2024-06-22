@@ -17,6 +17,7 @@ public:
     virtual void ImguiRenderFoot() {}
     virtual void OnStart() {}
     virtual void OnFinish() {}
+    virtual void Reset() {}
     virtual TaskType Type() { return TaskType::None; };
 
 protected:

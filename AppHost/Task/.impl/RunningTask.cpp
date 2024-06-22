@@ -65,9 +65,9 @@ void RunningTask::ImguiRenderFoot()
 
 void RunningTask::OnStart()
 {
-    if (!AppLoader::Ins()->Load())
+    if (!AppLoader::Ins()->Start())
     {
-        // todo
+        throw new Ex("RunningTask::OnStart failed");
     }
 
     std::unique_lock<std::mutex> _ul(m_ConfirmMtx);
@@ -76,7 +76,7 @@ void RunningTask::OnStart()
 
 void RunningTask::OnFinish()
 {
-    AppLoader::Ins()->Unload();
+    AppLoader::Ins()->Finish();
     TaskManager::Ins()->PrepareNextTask(TaskType::Stopped);
 }
 

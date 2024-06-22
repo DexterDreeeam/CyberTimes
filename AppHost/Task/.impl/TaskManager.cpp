@@ -5,6 +5,7 @@
 #include "StartUpTask.hpp"
 #include "UserTokenInputTask.hpp"
 #include "UserTokenVerifyingTask.hpp"
+#include "StoppedTask.hpp"
 #include "RunningTask.hpp"
 
 NS_BEG
@@ -53,6 +54,7 @@ void TaskManager::Life()
 
         t->Start();
         t->Finish();
+        t->Reset();
     }
 }
 
@@ -102,6 +104,8 @@ std::shared_ptr<TaskBase> TaskManager::CurrentTask()
         return UserTokenInputTask::Ins();
     case TaskType::UserTokenVerifying:
         return UserTokenVerifyingTask::Ins();
+    case TaskType::Stopped:
+        return StoppedTask::Ins();
     case TaskType::Running:
         return RunningTask::Ins();
     default:

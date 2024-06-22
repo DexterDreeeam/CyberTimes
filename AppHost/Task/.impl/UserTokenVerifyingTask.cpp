@@ -52,28 +52,22 @@ void UserTokenVerifyingTask::ImguiRenderFoot()
     ImGui::SetWindowFontScale(1.2f);
 
     ImGui::BeginDisabled();
-    if (ImGui::Button("Reset", ImVec2(380.0f, 40.0f)))
-    {
-        memset(m_UserToken, 0, sizeof(m_UserToken));
-    }
+    ImGui::Button("Reset", ImVec2(380.0f, 40.0f));
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Confirm", ImVec2(380.0f, 40.0f)))
-    {
-        m_ConfirmCv.notify_all();
-    }
+    ImGui::Button("Confirm", ImVec2(380.0f, 40.0f));
     ImGui::EndDisabled();
 }
 
 void UserTokenVerifyingTask::OnStart()
 {
-    Sleep(3000);
+    Sleep(1000);
 }
 
 void UserTokenVerifyingTask::OnFinish()
 {
-    TaskManager::Ins()->PrepareNextTask(TaskType::Running);
+    TaskManager::Ins()->PrepareNextTask(TaskType::Stopped);
 }
 
 NS_END
