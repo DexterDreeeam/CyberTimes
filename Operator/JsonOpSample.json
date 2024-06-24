@@ -1,11 +1,8 @@
 {
     "states": {
-        "background": "black",
-        "origin": "green",
-        "options": "16",
-        "layout": [
-            1, 2
-        ],
+        "background_color": "black",
+        "origin_color": "green",
+        "option_num": "16",
         "rows": [
             {
                 "cols": [
@@ -21,7 +18,7 @@
         ]
     },
 
-    "pre_vars": {
+    "vars": {
         "v-1": "s-1 > 5",
         "v-2": "s-2 <= 3",
         "v-3": "v-1 and v-2",
