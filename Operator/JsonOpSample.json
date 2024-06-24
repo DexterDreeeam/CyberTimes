@@ -1,22 +1,56 @@
 {
-    "grid-layout": [
-        5,
-        6,
-        7
-    ],
-    "op-pipes": [
+    "states": {
+        "background": "black",
+        "origin": "green",
+        "options": "16",
+        "layout": [
+            1, 2
+        ],
+        "rows": [
+            {
+                "cols": [
+                    "s-1"
+                ]
+            },
+            {
+                "cols": [
+                    "s-2",
+                    "s-3"
+                ]
+            }
+        ]
+    },
+
+    "pre_vars": {
+        "v-1": "s-1 > 5",
+        "v-2": "s-2 <= 3",
+        "v-3": "v-1 and v-2",
+        "v-4": "v-3 or v-1",
+        "v-5": "not v-4"
+    },
+
+    "triggers": {
+        "v-2": "skill-1",
+        "v-3": "skill-1",
+        "v-4": "skill-2",
+        "v-5": "skill-3"
+    },
+
+    "op_pipes": [
         {
-            "nick": "pipe-1",
+            "pipe_name": "pipe-1",
             "ops": [
-                {
-                    "condition": [
-                        
-                    ]
-                }
+                "v-2",
+                "v-3"
             ]
         },
         {
-
+            "pipe_name": "pipe-2",
+            "ops": [
+                "v-3",
+                "v-4",
+                "v-5"
+            ]
         }
     ]
 }
