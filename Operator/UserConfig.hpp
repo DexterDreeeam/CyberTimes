@@ -6,63 +6,73 @@ NS_BEG
 
 class TaskBase;
 
-class OpConfigStates
+class UserConfigStates
 {
 public:
-    std::string                   background_color;
-    std::string                   origin_color;
-    int                           option_num;
-    std::vector<std::vector<int>> states;
+    str     background_color;
+    str     origin_color;
+    int     option_num;
+    std_vvs states;
 };
 
-class OpConfigVarCondition
+enum UserConfigExpOp : int
+{
+    NONE,
+
+    OP_GT,
+    OP_LT,
+    OP_GE,
+    OP_LE,
+    OP_EQ,
+    OP_NE,
+
+    OP_AND,
+    OP_OR,
+
+    OP_IS,
+    OP_NOT,
+
+    LAST,
+    Num = LAST - 1
+};
+
+class UserConfigExp
 {
 public:
-    std::string lhs;
-    std::string op;
-    std::string rhs;
+    str lhs;
+    str rhs;
+    UserConfigExpOp op;
 };
 
-class OpConfig : public InsBase<OpConfig>
+class UserConfig : public InsBase<UserConfig>
 {
     friend class InsBase;
 
 public:
     virtual void OnInstantiate() override;
-    ~OpConfig();
+    ~UserConfig();
 
 private:
-    OpConfig();
-    OpConfig(const OpConfig&) = delete;
+    UserConfig();
+    UserConfig(const UserConfig&) = delete;
 
 public:
-    void Load(std::string jsonStr);
+    void Load(const str& opJsonStr, const str& keyJsonStr);
+    void Unload();
+
+private:
+    bool IsConstant(const str& s);
+    bool IsState(const str& s);
+    bool IsVar(const str& s);
+    UserConfigExpOp ParseOperator(const str& s);
+    UserConfigExp ParseExpression(const str& s);
+    std_vs ParseInferOrder();
 
 public:
-    OpConfigStates                              m_states;
-    std::map<std::string, int>                  m_stateValues;
-    std::map<std::string, OpConfigVarCondition> m_varConditions;
-    std::vector<std::string>                    m_varInferOrder;
-    std::map<std::string, int>                  m_varValues;
+    OpConfigStates               m_states;
+    std::map<str, UserConfigExp> m_varConditions;
+    std_vs                       m_varInferOrder;
+    std_mss                      m_keyMap;
 };
-
-class KeyConfig : public InsBase<KeyConfig>
-{
-    friend class InsBase;
-
-public:
-    virtual void OnInstantiate() override;
-    ~KeyConfig();
-
-private:
-    KeyConfig();
-    KeyConfig(const KeyConfig&) = delete;
-
-public:
-    void Load(std::string jsonStr);
-
-public:
-    std::map<std::string, std::string> m_keyMap;
-}
 
 NS_END
