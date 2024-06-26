@@ -8,6 +8,7 @@ void DataBase::OnInstantiate()
 
 DataBase::UserConfig() :
     m_config(),
+    m_stateArray(),
     m_stateValues(),
     m_varValues()
 {
@@ -36,6 +37,7 @@ void DataBase::Load(const str& opJsonStr, const str& keyJsonStr)
 
 void DataBase::Unload()
 {
+    m_stateArray = std_vvi();
     m_stateValues = std_msi();
     m_varValues = std_msi();
     m_config.Unload();

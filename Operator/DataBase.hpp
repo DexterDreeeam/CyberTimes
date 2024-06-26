@@ -20,11 +20,13 @@ private:
 public:
     void Load(const str& opJsonStr, const str& keyJsonStr);
     void Unload();
+    std_vvi& GetStateArray();
 
 public:
-    UserConfig m_config;
-    std_msi    m_stateValues;
-    std_msi    m_varValues;
+    UserConfig  m_config;
+    std_vvi     m_stateArray;
+    std_msi     m_stateValues;
+    std_msi     m_varValues;
 };
 
 NS_END

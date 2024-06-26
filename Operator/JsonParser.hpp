@@ -11,7 +11,6 @@ public:
     ~JsonParser();
 
 public:
-    
     std_vvs GetStates();
     std_mss GetVars();
     std_mss GetTriggers();

@@ -80,10 +80,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Vision.hpp" />
+    <ClInclude Include="VisionApp.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include=".src\Vision.cpp" />
+    <ClCompile Include=".src\VisionApp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
