@@ -1,4 +1,8 @@
 {
+    "system": {
+        "cycle": 5
+    },
+
     "states": {
         "background_color": "black",
         "origin_color": "green",

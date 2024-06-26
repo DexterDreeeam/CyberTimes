@@ -11,6 +11,8 @@ public:
     ~JsonParser();
 
 public:
+    int     GetSystemInt(const str& name);
+    str     GetSystemStr(const str& name);
     std_vvs GetStates();
     std_mss GetVars();
     std_mss GetTriggers();

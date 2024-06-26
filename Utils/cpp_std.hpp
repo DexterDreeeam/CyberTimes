@@ -9,10 +9,13 @@
 #include <new>
 #include <queue>
 #include <regex>
+#include <stack>
 #include <string>
 #include <thread>
+#include <unordered_map>
+#include <unordered_set>
 
-using str = str;
+using str = std::string;
 
 using std_vi  = std::vector<int>;
 using std_vs  = std::vector<str>;

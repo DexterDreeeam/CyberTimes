@@ -6,15 +6,6 @@ NS_BEG
 
 class TaskBase;
 
-class UserConfigStates
-{
-public:
-    str     background_color;
-    str     origin_color;
-    int     option_num;
-    std_vvs states;
-};
-
 enum UserConfigExpOp : int
 {
     NONE,
@@ -69,7 +60,8 @@ private:
     std_vs ParseInferOrder();
 
 public:
-    OpConfigStates               m_states;
+    SystemConfig                 m_system;
+    std_vvs                      m_states;
     std::map<str, UserConfigExp> m_varConditions;
     std_vs                       m_varInferOrder;
     std_mss                      m_keyMap;

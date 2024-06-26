@@ -18,12 +18,11 @@ private:
     DataBase(const DataBase&) = delete;
 
 public:
-    void Load(const str& opJsonStr, const str& keyJsonStr);
+    void Load();
     void Unload();
-    std_vvi& GetStateArray();
+    std_vvi& GetStateArray() { return m_stateArray; }
 
 public:
-    UserConfig  m_config;
     std_vvi     m_stateArray;
     std_msi     m_stateValues;
     std_msi     m_varValues;

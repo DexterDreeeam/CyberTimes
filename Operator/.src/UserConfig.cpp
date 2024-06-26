@@ -8,6 +8,7 @@ void UserConfig::OnInstantiate()
 }
 
 UserConfig::UserConfig() :
+    m_system(),
     m_states(),
     m_varConditions(),
     m_varInferOrder(),
@@ -24,7 +25,8 @@ void UserConfig::Load(const str& opJsonStr, const str& keyJsonStr)
     Unload();
     JsonParser jp(opJsonStr, keyJsonStr);
 
-    m_states.states = jp.GetStates();
+    m_system.cycle = jp.GetSystemInt("cycle");
+    m_states = jp.GetStates();
     for (const auto& [k, v] : jp.GetVars())
     {
         m_varConditions[k] = ParseExpression(v);
@@ -42,7 +44,8 @@ void UserConfig::Load(const str& opJsonStr, const str& keyJsonStr)
 
 void UserConfig::Unload()
 {
-    m_states = UserConfigStates();
+    m_system = SystemConfig();
+    m_states = std_vvs();
     m_varConditions = std::map<str, UserConfigExp>();
     m_varInferOrder = std_vs();
     m_keyMap = std_mss();

@@ -16,3 +16,4 @@ typedef                 long   s32;
 #include "cpp_std.hpp"
 #include "exception.hpp"
 #include "InsBase.hpp"
+#include "SystemConfig.hpp"

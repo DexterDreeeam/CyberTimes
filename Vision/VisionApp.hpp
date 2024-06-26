@@ -17,7 +17,14 @@ private:
     VisionApp(const VisionApp&) = delete;
 
 public:
-    bool ScreenScan(vvi& stateArray);
+    void Load(const SystemConfig& system);
+    void Unload();
+
+public:
+    bool ScreenScan(std_vvi& stateArray);
+
+private:
+    SystemConfig m_system;
 };
 
 NS_END

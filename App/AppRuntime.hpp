@@ -15,6 +15,13 @@ public:
 private:
     AppRuntime();
     AppRuntime(const AppRuntime&) = delete;
+
+public:
+    void Load(const str& opJsonStr, const str& keyJsonStr);
+    void Loop(volatile bool& cancelToken);
+
+private:
+    SystemConfig m_system;
 };
 
 NS_END

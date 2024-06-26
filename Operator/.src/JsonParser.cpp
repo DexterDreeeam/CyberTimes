@@ -1,7 +1,7 @@
 #include "JsonParser.hpp"
 #include <.nlohmann/json.hpp>
 
-using nj = nlohmann::json;
+namespace nj = nlohmann;
 
 NS_BEG
 
@@ -19,27 +19,51 @@ JsonParser::JsonParser(const str& opJson, const str& keyJson) :
     m_pOp(nullptr),
     m_pKey(nullptr)
 {
-    m_pOp = new char[sizeof(nj::json)];
-    m_pKey = new char[sizeof(nj::json)];
+    m_pOp = new nj::json();
+    m_pKey = new nj::json();
 
-    ToJson(m_pOp) = nj::parse(opJson);
-    ToJson(m_pKey) = nj::parse(keyJson);
+    ToJson(m_pOp) = nj::json::parse(opJson);
+    ToJson(m_pKey) = nj::json::parse(keyJson);
 }
 
 JsonParser::~JsonParser()
 {
     if (m_pOp)
     {
-        ToJsonPtr(m_pOp)->~json();
-        delete[] m_pOp;
+        delete ToJsonPtr(m_pOp);
         m_pOp = nullptr;
     }
     if (m_pKey)
     {
-        ToJsonPtr(m_pKey)->~json();
-        delete[] m_pKey;
+        delete ToJsonPtr(m_pKey);
         m_pKey = nullptr;
     }
+}
+
+int JsonParser::GetSystemInt(const str& name)
+{
+    auto& j = ToJson(m_pOp);
+    if (j.contains("system") && j["system"].contains(name))
+    {
+        if (j["system"][name].is_number())
+        {
+            return j["system"][name];
+        }
+    }
+    return 0;
+}
+
+str JsonParser::GetSystemStr(const str& name)
+{
+    auto& j = ToJson(m_pOp);
+    if (j.contains("system") && j["system"].contains(name))
+    {
+        if (j["system"][name].is_string())
+        {
+            return j["system"][name];
+        }
+    }
+    return "";
 }
 
 std_vvs JsonParser::GetStates()

@@ -45,8 +45,7 @@
     <ClInclude Include="cpp_std.hpp" />
     <ClInclude Include="exception.hpp" />
     <ClInclude Include="InsBase.hpp" />
-    <ClInclude Include="skills.hpp" />
-    <ClInclude Include="states.hpp" />
+    <ClInclude Include="SystemConfig.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

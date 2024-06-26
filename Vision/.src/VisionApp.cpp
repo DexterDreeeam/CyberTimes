@@ -6,7 +6,8 @@ void VisionApp::OnInstantiate()
 {
 }
 
-VisionApp::VisionApp()
+VisionApp::VisionApp() :
+    m_system()
 {
 }
 
@@ -14,7 +15,16 @@ VisionApp::~VisionApp()
 {
 }
 
-bool VisionApp::ScreenScan(vvi& stateArray)
+void VisionApp::Load(const SystemConfig& system)
+{
+    m_system = system;
+}
+
+void VisionApp::Unload()
+{
+}
+
+bool VisionApp::ScreenScan(std_vvi& stateArray)
 {
     // todo
     return true;
