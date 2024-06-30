@@ -64,6 +64,8 @@ public:
     std_vvs                      m_states;
     std::map<str, UserConfigExp> m_varConditions;
     std_vs                       m_varInferOrder;
+    std_mss                      m_triggers;
+    std_vvs                      m_pipes;
     std_mss                      m_keyMap;
 };
 

@@ -31,14 +31,9 @@ void UserConfig::Load(const str& opJsonStr, const str& keyJsonStr)
     {
         m_varConditions[k] = ParseExpression(v);
     }
-    for (const auto& [k, v] : jp.GetTriggers())
-    {
-        m_varConditions[k] = ParseExpression(v);
-    }
-    for (const auto& [k, v] : jp.GetKeyMap())
-    {
-        m_keyMap[k] = v;
-    }
+    m_triggers = jp.GetTriggers();
+    m_pipes = jp.GetPipes();
+    m_keyMap = jp.GetKeyMap();
     ParseInferOrder();
 }
 

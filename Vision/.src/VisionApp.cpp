@@ -17,6 +17,7 @@ VisionApp::~VisionApp()
 
 void VisionApp::Load(const SystemConfig& system)
 {
+    Unload();
     m_system = system;
 }
 

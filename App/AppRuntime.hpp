@@ -17,11 +17,16 @@ private:
     AppRuntime(const AppRuntime&) = delete;
 
 public:
+    static void Entry();
+    void Cancel();
+
     void Load(const str& opJsonStr, const str& keyJsonStr);
-    void Loop(volatile bool& cancelToken);
+    void Loop();
 
 private:
-    SystemConfig m_system;
+    SystemConfig  m_system;
+    std::mutex    m_runtimeLock;
+    volatile bool m_cancel;
 };
 
 NS_END

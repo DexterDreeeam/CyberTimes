@@ -23,9 +23,9 @@ public:
     std_vvi& GetStateArray() { return m_stateArray; }
 
 public:
-    std_vvi     m_stateArray;
-    std_msi     m_stateValues;
-    std_msi     m_varValues;
+    std_vvi  m_stateArray;
+    std_msi  m_stateValues;
+    std_msi  m_varValues;
 };
 
 NS_END
