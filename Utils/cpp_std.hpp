@@ -17,6 +17,7 @@
 #include <unordered_set>
 
 using str = std::string;
+using wstr = std::wstring;
 
 using std_vi  = std::vector<int>;
 using std_vs  = std::vector<str>;

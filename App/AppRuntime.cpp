@@ -1,3 +1,4 @@
+#include <Windows.h>
 #include "AppRuntime.hpp"
 #include "UserConfig.hpp"
 #include "DataBase.hpp"
@@ -11,6 +12,7 @@ void AppRuntime::OnInstantiate()
 }
 
 AppRuntime::AppRuntime() :
+    m_handles(),
     m_system(),
     m_runtimeLock(),
     m_cancel(false)
@@ -78,6 +80,49 @@ void AppRuntime::Loop()
         VisionApp::Ins()->ScreenScan(stateArray);
         Operator::Ins()->Process();
     }
+}
+
+void AppRuntime::OutputKey(const str& key)
+{
+    for (auto h : m_handles)
+    {
+        unsigned char code = WinKeyMap[key];
+        PostMessageA((HWND)h, WM_KEYDOWN, code, 0);
+        PostMessageA((HWND)h, WM_KEYUP,   code, 0);
+    }
+}
+
+wstr AppRuntime::GetWindowTitle(HWND hwnd)
+{
+    int len = GetWindowTextLengthW(hwnd);
+    if (len == 0)
+    {
+        return L"";
+    }
+    wstr s(len, '\0');
+    GetWindowTextW(hwnd, s.data(), len + 1);
+    return s;
+}
+
+BOOL CALLBACK AppRuntime::EnumWindowsProc(HWND hwnd, LPARAM lParam)
+{
+    lParam;
+    wstr title = GetWindowTitle(hwnd);
+    for (const auto& titleSubstr : WindowTitles)
+    {
+        if (title.find(titleSubstr) != wstr::npos)
+        {
+            AppRuntime::Ins()->m_handles.push_back((u64)hwnd);
+        }
+    }
+    return TRUE;
+}
+
+bool AppRuntime::LoadWindowHandles()
+{
+    m_handles.clear();
+    EnumWindows(EnumWindowsProc, NULL);
+    return m_handles.size() > 0;
 }
 
 NS_END
