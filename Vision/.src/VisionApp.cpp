@@ -1,4 +1,6 @@
+#include <Windows.h>
 #include "VisionApp.hpp"
+#include "ScreenReader.hpp"
 
 NS_BEG
 
@@ -27,7 +29,7 @@ void VisionApp::Unload()
 
 bool VisionApp::ScreenScan(std_vvi& stateArray)
 {
-    // todo
+    ScreenReader::Ins()->ScreenScan();
     return true;
 }
 

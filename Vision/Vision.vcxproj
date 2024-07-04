@@ -80,9 +80,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ScreenReader.hpp" />
     <ClInclude Include="VisionApp.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include=".src\ScreenReader.cpp" />
     <ClCompile Include=".src\VisionApp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

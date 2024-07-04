@@ -4,6 +4,7 @@
 #include "UserConfig.hpp"
 #include "DataBase.hpp"
 #include "VisionApp.hpp"
+#include "ScreenReader.hpp"
 #include "Operator.hpp"
 
 NS_BEG
@@ -13,7 +14,7 @@ void AppRuntime::OnInstantiate()
 }
 
 AppRuntime::AppRuntime() :
-    m_handles(),
+    m_handle(0),
     m_system(),
     m_runtimeLock(),
     m_cancel(false)
@@ -50,9 +51,11 @@ void AppRuntime::Cancel()
 
 void AppRuntime::Load(const str& opJsonStr, const str& keyJsonStr)
 {
+    LoadWindowHandles();
     UserConfig::Ins()->Load(opJsonStr, keyJsonStr);
     DataBase::Ins()->Load();
     VisionApp::Ins()->Load(UserConfig::Ins()->m_system);
+    ScreenReader::Ins()->Load(m_handle);
     Operator::Ins()->Load();
 
     std::thread t(AppRuntime::Entry);
@@ -85,12 +88,9 @@ void AppRuntime::Loop()
 
 void AppRuntime::OutputKey(const str& key)
 {
-    for (auto h : m_handles)
-    {
-        unsigned char code = WinKeyMap[key];
-        PostMessageA((HWND)h, WM_KEYDOWN, code, 0);
-        PostMessageA((HWND)h, WM_KEYUP,   code, 0);
-    }
+    unsigned char code = WinKeyMap[key];
+    PostMessageA((HWND)m_handle, WM_KEYDOWN, code, 0);
+    PostMessageA((HWND)m_handle, WM_KEYUP,   code, 0);
 }
 
 wstr GetWindowTitle(HWND hwnd)
@@ -113,22 +113,22 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
     {
         if (title.find(titleSubstr) != wstr::npos)
         {
-            AppRuntime::Ins()->AddWindowHandle((u64)hwnd);
+            AppRuntime::Ins()->SetWindowHandle((u64)hwnd);
         }
     }
     return TRUE;
 }
 
-void AppRuntime::AddWindowHandle(u64 handle)
+void AppRuntime::SetWindowHandle(u64 handle)
 {
-    m_handles.push_back(handle);
+    m_handle = handle;
 }
 
 bool AppRuntime::LoadWindowHandles()
 {
-    m_handles.clear();
+    m_handle = 0;
     EnumWindows(EnumWindowsProc, NULL);
-    return m_handles.size() > 0;
+    return m_handle != 0;
 }
 
 NS_END

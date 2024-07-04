@@ -4,8 +4,9 @@
     },
 
     "states": {
-        "background_color": "black",
-        "origin_color": "green",
+        "border_color": "green",
+        "background_color": "white",
+        "origin_color": "black",
         "option_num": "16",
         "rows": [
             {
