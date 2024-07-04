@@ -8,9 +8,6 @@ class AppRuntime : public InsBase<AppRuntime>
 {
     friend class InsBase;
 
-    static std::vector<wstr> WindowTitles;
-    static std::unordered_map<str, unsigned char> WinKeyMap;
-
 public:
     virtual void OnInstantiate() override;
     ~AppRuntime();
@@ -24,11 +21,10 @@ public:
     void Cancel();
     void Load(const str& opJsonStr, const str& keyJsonStr);
     void Loop();
+    void AddWindowHandle(u64 handle);
     void OutputKey(const str& key);
 
 private:
-    static wstr GetWindowTitle(HWND hwnd);
-    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
     bool LoadWindowHandles();
 
 private:
@@ -37,7 +33,5 @@ private:
     std::mutex         m_runtimeLock;
     volatile bool      m_cancel;
 };
-
-#include "AppDefinition.hpp"
 
 NS_END

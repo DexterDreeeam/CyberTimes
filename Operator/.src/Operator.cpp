@@ -1,4 +1,5 @@
 #include "Operator.hpp"
+#include "AppRuntime.hpp"
 #include "UserConfig.hpp"
 #include "DataBase.hpp"
 
@@ -174,7 +175,7 @@ void Operator::CastSkill(const str& skill, const std_mss& keys)
 
 void Operator::PressKey(const str& key)
 {
-    // todo
+    AppRuntime::Ins()->OutputKey(key);
 }
 
 NS_END

@@ -1,13 +1,13 @@
 #pragma once
 
-std::vector<wstr> AppRuntime::WindowTitles =
+const wstr WindowTitles[] =
 {
     L"World of Warcraft",
     L"魔兽世界",
     L"魔獸世界"
 };
 
-std::unordered_map<str, unsigned char> AppRuntime::WinKeyMap =
+std::unordered_map<str, unsigned char> WinKeyMap =
 {
     { "0", 0x30 },
     { "1", 0x31 },

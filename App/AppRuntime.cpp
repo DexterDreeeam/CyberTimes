@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include "AppRuntime.hpp"
+#include "AppDefinition.hpp"
 #include "UserConfig.hpp"
 #include "DataBase.hpp"
 #include "VisionApp.hpp"
@@ -92,7 +93,7 @@ void AppRuntime::OutputKey(const str& key)
     }
 }
 
-wstr AppRuntime::GetWindowTitle(HWND hwnd)
+wstr GetWindowTitle(HWND hwnd)
 {
     int len = GetWindowTextLengthW(hwnd);
     if (len == 0)
@@ -104,7 +105,7 @@ wstr AppRuntime::GetWindowTitle(HWND hwnd)
     return s;
 }
 
-BOOL CALLBACK AppRuntime::EnumWindowsProc(HWND hwnd, LPARAM lParam)
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {
     lParam;
     wstr title = GetWindowTitle(hwnd);
@@ -112,10 +113,15 @@ BOOL CALLBACK AppRuntime::EnumWindowsProc(HWND hwnd, LPARAM lParam)
     {
         if (title.find(titleSubstr) != wstr::npos)
         {
-            AppRuntime::Ins()->m_handles.push_back((u64)hwnd);
+            AppRuntime::Ins()->AddWindowHandle((u64)hwnd);
         }
     }
     return TRUE;
+}
+
+void AppRuntime::AddWindowHandle(u64 handle)
+{
+    m_handles.push_back(handle);
 }
 
 bool AppRuntime::LoadWindowHandles()
